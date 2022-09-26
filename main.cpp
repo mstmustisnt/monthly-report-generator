@@ -13,7 +13,7 @@ struct user_data
     int hours;
 };
 
-int find_index_by_name_and_date(vector<user_data> &users, string &full_name, string &date) {
+int find_index_by_name_and_date(const vector<user_data> &users, const string &full_name, const string &date) {
     for (int i = 0; i < users.size(); i++) {
         if (users[i].full_name == full_name && users[i].date == date) {
             return i;
@@ -35,7 +35,7 @@ vector<string> split(const string &s, char delim) {
 string prepare_date(string raw_date) {
     const char * months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     vector<string> date_row = split(raw_date, '-');
-    int month_num = stoi(date_row[1]);
+    const int month_num = stoi(date_row[1]);
     string year = date_row[0];
     string date(months[month_num - 1]);
     date.append(" ");
@@ -44,7 +44,7 @@ string prepare_date(string raw_date) {
     return date;
 }
 
-vector<user_data> prepare_monthly_report(string file_name)
+vector<user_data> prepare_monthly_report(const string file_name)
 {
     vector<user_data> users;
     string line;
