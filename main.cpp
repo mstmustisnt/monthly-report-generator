@@ -59,12 +59,12 @@ vector<user_data> prepare_monthly_report(const string file_name)
             continue;
         }
 
-        vector<string> row = split(line, ';');
+        const vector<string> row = split(line, ';');
         // Name;email;department;position;project;task;date;logged hours
         user_data user;
-        string date = prepare_date(row[6]);
+        const string date = prepare_date(row[6]);
 
-        int index = find_index_by_name_and_date(users, row[0], date);
+        const int index = find_index_by_name_and_date(users, row[0], date);
 
         if (index != -1) {
             // user record for this month and year already exists
