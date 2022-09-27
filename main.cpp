@@ -3,6 +3,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include "logger.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ struct user_data
     int hours;
 };
 
-int find_index_by_name_and_date(const vector<user_data>& users, const string& full_name, const string& date) {
+int FindIndexByNameAndDate(const vector<user_data>& users, const string& full_name, const string& date) {
     for (int i = 0; i < users.size(); i++) {
         if (users[i].full_name == full_name && users[i].date == date) {
             return i;
@@ -23,7 +24,7 @@ int find_index_by_name_and_date(const vector<user_data>& users, const string& fu
     return -1;
 }
 
-vector<string> split(const string& s, char delim) {
+vector<string> Split(const string& s, char delim) {
   stringstream ss(s);
   string item;
   vector<string> elems;
@@ -33,9 +34,9 @@ vector<string> split(const string& s, char delim) {
   return elems;
 }
 
-string prepare_date(const string& raw_date) {
+string PrepareDate(const string& raw_date) {
     const char * months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-    vector<string> date_row = split(raw_date, '-');
+    vector<string> date_row = Split(raw_date, '-');
     const int month_num = stoi(date_row[1]);
     string year = date_row[0];
     string date(months[month_num - 1]);
@@ -45,7 +46,7 @@ string prepare_date(const string& raw_date) {
     return date;
 }
 
-vector<user_data> prepare_monthly_report(const string& file_name)
+vector<user_data> PrepareMonthlyReport(const string& file_name)
 {
     vector<user_data> users;
     string line;
@@ -60,12 +61,12 @@ vector<user_data> prepare_monthly_report(const string& file_name)
             continue;
         }
 
-        const vector<string> row = split(line, ';');
+        const vector<string> row = Split(line, ';');
         // Name;email;department;position;project;task;date;logged hours
         user_data user;
-        const string date = prepare_date(row[6]);
+        const string date = PrepareDate(row[6]);
 
-        const int index = find_index_by_name_and_date(users, row[0], date);
+        const int index = FindIndexByNameAndDate(users, row[0], date);
 
         if (index != -1) {
             // user record for this month and year already exists
@@ -81,14 +82,16 @@ vector<user_data> prepare_monthly_report(const string& file_name)
     return users;
 }
 
-void log_report(const vector<user_data>& users, const string& out_file_name)
+void LogReport(const vector<user_data>& users, const string& out_file_name)
 {
+    Logger logger;
+    logger.SetLevel(info);
     // if we want to write to file
     // ofstream out_file;
     // out_file.open(out_file_name);
     for (int i = 0; i < users.size(); i++) {
         user_data user = users[i];
-        cout << user.full_name << ";" << user.date << ";" << user.hours << endl;
+        logger.Info(user.full_name + ";" + user.date + ";" + to_string(user.hours));
         // optionally if it was meant to write to file
         // out_file << user.full_name << ";" << user.date << ";" << user.hours << "\n";
     }
@@ -97,10 +100,9 @@ void log_report(const vector<user_data>& users, const string& out_file_name)
 
 int main()
 {
-    cout << "Start!" << endl;
     const string source_file_name = "report.csv";
     const string out_file_name = "monthly_report.csv";
-    const vector<user_data> users = prepare_monthly_report(source_file_name);
-    log_report(users, out_file_name);
+    const vector<user_data> users = PrepareMonthlyReport(source_file_name);
+    LogReport(users, out_file_name);
     return 0;
 }
