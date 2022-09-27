@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// TODO: using smth like Map in C++ to quickly pick by key, not loop every time
 struct user_data
 {
     string full_name;
