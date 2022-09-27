@@ -14,7 +14,7 @@ struct user_data
     int hours;
 };
 
-int find_index_by_name_and_date(const vector<user_data> &users, const string &full_name, const string &date) {
+int find_index_by_name_and_date(const vector<user_data>& users, const string& full_name, const string& date) {
     for (int i = 0; i < users.size(); i++) {
         if (users[i].full_name == full_name && users[i].date == date) {
             return i;
@@ -23,7 +23,7 @@ int find_index_by_name_and_date(const vector<user_data> &users, const string &fu
     return -1;
 }
 
-vector<string> split(const string &s, char delim) {
+vector<string> split(const string& s, char delim) {
   stringstream ss(s);
   string item;
   vector<string> elems;
@@ -33,7 +33,7 @@ vector<string> split(const string &s, char delim) {
   return elems;
 }
 
-string prepare_date(string raw_date) {
+string prepare_date(const string& raw_date) {
     const char * months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     vector<string> date_row = split(raw_date, '-');
     const int month_num = stoi(date_row[1]);
@@ -45,7 +45,7 @@ string prepare_date(string raw_date) {
     return date;
 }
 
-vector<user_data> prepare_monthly_report(const string file_name)
+vector<user_data> prepare_monthly_report(const string& file_name)
 {
     vector<user_data> users;
     string line;
@@ -81,7 +81,7 @@ vector<user_data> prepare_monthly_report(const string file_name)
     return users;
 }
 
-void log_report(const vector<user_data> &users, const string &out_file_name)
+void log_report(const vector<user_data>& users, const string& out_file_name)
 {
     // if we want to write to file
     // ofstream out_file;
