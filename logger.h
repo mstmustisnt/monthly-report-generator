@@ -4,7 +4,7 @@ enum LogLevel { error, warning, info };
 enum LogDestination { file, console };
 
 using namespace std;
-template <typename LogFunction>
+using LogFunction = std::function<void(const string&)>;
 
 class Logger
 {

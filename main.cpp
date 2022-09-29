@@ -11,7 +11,7 @@ using namespace std;
 class ReportConverter
 {
     private:
-        Logger<std::function<void(string)>> m_logger;
+        Logger m_logger;
         struct UserData
         {
             string fullName;
@@ -42,7 +42,7 @@ class ReportConverter
             return date;
         }
     public:
-        ReportConverter(Logger<std::function<void(string)>> logger): m_logger(logger)
+        ReportConverter(Logger logger): m_logger(logger)
         {
         }
         void ConvertDailyToMonthly(const string& file_name)
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
             : cout << message << endl;
     };
 
-    Logger<std::function<void(string)>> logger(logFunction);
+    Logger logger(logFunction);
     if (logToFile)
     {
         outFileStream.open(outFileName);
