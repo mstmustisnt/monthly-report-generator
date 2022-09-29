@@ -97,7 +97,7 @@ int main(int argc, char **argv)
         throw invalid_argument("Unsupported logging destination " + string(logDestination));
     }
 
-    auto logFunction = [&logToFile, &outFileStream] (string message) -> void
+    auto logFunction = [&logToFile, &outFileStream] (const string& message)
     {
         logToFile
             ? outFileStream << message << "\n"
