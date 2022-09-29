@@ -1,33 +1,48 @@
+#include <fstream>
+
 enum LogLevel { error, warning, info };
+enum LogDestination { file, console };
+
+using namespace std;
+template <typename LogFunction>
 
 class Logger
 {
     private:
         LogLevel m_level;
+        LogFunction m_logFunction;
+        LogDestination m_logDestination;
     public:
+        Logger(const LogFunction &logFunction): m_logFunction(logFunction)
+        {
+        }
         void SetLevel(LogLevel newLevel)
         {
             m_level = newLevel;
         }
-        void Error(std::string message)
+        void SetLogDestination(LogDestination logDestination)
+        {
+            m_logDestination = logDestination;
+        }
+        void Error(string message)
         {
              if (m_level >= error)
              {
-                std::cout << "[ERROR]: " << message << std::endl;
+                m_logFunction("[ERROR]: " + message);
              }
         }
-        void Warning(std::string message)
+        void Warning(string message)
         {
             if (m_level >= warning)
             {
-                std::cout << "[WARNING]: " << message << std::endl;
+                m_logFunction("[WARNING]: " + message);
             }
         }
-        void Info(std::string message)
+        void Info(string message)
         {
             if (m_level >= info)
             {
-                std::cout << "[INFO]: " << message << std::endl;
+                m_logFunction("[INFO]: " + message);
             }
         }
 };
