@@ -1,5 +1,14 @@
-enum LogLevel { error, warning, info };
-enum LogDestination { file, console };
+enum LogLevel : unsigned char
+{
+    error,
+    warning,
+    info
+};
+enum LogDestination : unsigned char
+{
+    file,
+    console
+};
 
 using namespace std;
 using LogFunction = function<void(const string&)>;
