@@ -80,7 +80,7 @@ class ReportConverter
             }
         }
 
-        void LogReport(const string& outFileName)
+        void LogReport()
         {
             for (auto const& [key, user] : m_usersMap) {
                 m_logger.Info(user.fullName + ";" + user.date + ";" + to_string(user.hours));
@@ -91,8 +91,8 @@ class ReportConverter
 int main(int argc, char **argv)
 {
     const char* logDestination = argv[1] ? argv[1] : "console";
-    const string sourceFileName = "report.csv";
-    const string outFileName = "logs.txt";
+    const string SOURCE_FILE_NAME = "report.csv";
+    const string OUT_FILE_NAME = "logs.txt";
     ofstream outFileStream;
     const bool logToFile = string(logDestination).compare(string("file")) == 0;
     const bool logToConsole = string(logDestination).compare(string("console")) == 0;
@@ -113,16 +113,16 @@ int main(int argc, char **argv)
 
     if (logToFile)
     {
-        outFileStream.open(outFileName);
+        outFileStream.open(OUT_FILE_NAME);
     }
 
     ReportConverter reportConverter (logger);
-    reportConverter.ConvertDailyToMonthly(sourceFileName);
-    reportConverter.LogReport(outFileName);
+    reportConverter.ConvertDailyToMonthly(SOURCE_FILE_NAME);
+    reportConverter.LogReport();
 
     if (logToFile)
     {
-        cout << "Check logs in ./" << outFileName << endl;
+        cout << "Check logs in ./" << OUT_FILE_NAME << endl;
         outFileStream.close();
     };
 
