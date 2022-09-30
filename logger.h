@@ -1,10 +1,8 @@
-#include <fstream>
-
 enum LogLevel { error, warning, info };
 enum LogDestination { file, console };
 
 using namespace std;
-using LogFunction = std::function<void(const string&)>;
+using LogFunction = function<void(const string&)>;
 
 class Logger
 {
@@ -16,14 +14,17 @@ class Logger
         Logger(const LogFunction &logFunction): m_logFunction(logFunction)
         {
         }
+
         void SetLevel(LogLevel newLevel)
         {
             m_level = newLevel;
         }
+
         void SetLogDestination(LogDestination logDestination)
         {
             m_logDestination = logDestination;
         }
+
         void Error(string message)
         {
              if (m_level >= error)
@@ -31,6 +32,7 @@ class Logger
                 m_logFunction("[ERROR]: " + message);
              }
         }
+
         void Warning(string message)
         {
             if (m_level >= warning)
@@ -38,6 +40,7 @@ class Logger
                 m_logFunction("[WARNING]: " + message);
             }
         }
+
         void Info(string message)
         {
             if (m_level >= info)

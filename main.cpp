@@ -2,6 +2,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <fstream>
 #include <map>
 #include <exception>
 #include "logger.h"
@@ -19,6 +20,7 @@ class ReportConverter
             int hours = 0;
         };
         map<string, UserData> m_usersMap;
+
         vector<string> Split(const string& s, char delim)
         {
           stringstream ss(s);
@@ -29,13 +31,14 @@ class ReportConverter
           }
           return elems;
         }
+
         string PrepareDate(const string& raw_date)
         {
-            const char * months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+            const char * MONTHS[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
             vector<string> date_row = Split(raw_date, '-');
             const int month_num = stoi(date_row[1]);
             string year = date_row[0];
-            string date(months[month_num - 1]);
+            string date = MONTHS[month_num - 1];
             date.append(" ");
             date.append(year);
 
@@ -45,6 +48,7 @@ class ReportConverter
         ReportConverter(Logger logger): m_logger(logger)
         {
         }
+
         void ConvertDailyToMonthly(const string& file_name)
         {
             string line;
@@ -75,6 +79,7 @@ class ReportConverter
                 }
             }
         }
+
         void LogReport(const string& outFileName)
         {
             for (auto const& [key, user] : m_usersMap) {
@@ -105,17 +110,21 @@ int main(int argc, char **argv)
     };
 
     Logger logger(logFunction);
+
     if (logToFile)
     {
         outFileStream.open(outFileName);
     }
+
     ReportConverter reportConverter (logger);
     reportConverter.ConvertDailyToMonthly(sourceFileName);
     reportConverter.LogReport(outFileName);
+
     if (logToFile)
     {
         cout << "Check logs in ./" << outFileName << endl;
         outFileStream.close();
     };
+
     return 0;
 }
